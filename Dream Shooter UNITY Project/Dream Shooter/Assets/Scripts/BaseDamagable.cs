@@ -20,9 +20,16 @@ public class BaseDamagable : MonoBehaviour
     {
         if (other.tag == damagingTag)
         {
-            currHealthValue--;
+            IDamager damager = other.GetComponent<IDamager>();
 
-            DeathCheck();
+            if (damager != null)
+            {
+                currHealthValue -= damager.damageValue;
+
+                damager.OnceDamaged();
+
+                DeathCheck();
+            }
         }
     }
 
