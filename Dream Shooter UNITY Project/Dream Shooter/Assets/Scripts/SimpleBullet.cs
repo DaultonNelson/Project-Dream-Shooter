@@ -31,7 +31,8 @@ public class SimpleBullet : MonoBehaviour, IDamager
 
     private void Update()
     {
-        transform.Translate(Time.deltaTime * moveSpeed * transform.right);
+        transform.Translate(Time.deltaTime * moveSpeed * transform.right, Space.World);
+        Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.red);
     }
     
     public void OnceDamaged()

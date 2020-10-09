@@ -1,43 +1,29 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: Implement Movement Locking [N]
-//TODO: Implement Gun Control Locking [M]
-public class PlayerControl : MonoBehaviour
+public class PlayerShooting : MonoBehaviour
 {
     #region Variables
     /// <summary>
-    /// The speed at which the player moves.
-    /// </summary>
-    [Header("Movement Variables")]
-    public float movementSpeed;
-    /// <summary>
-    /// The transform of the player model object.
-    /// </summary>
-    public Transform playerCharacterModel;
-
-    /// <summary>
-    /// The controller attached to the player character.
-    /// </summary>
-    private CharacterController controller;
-    /// <summary>
-    /// The vector that holds the player's input information.
-    /// </summary>
-    private Vector3 inputVector;
-
-    /// <summary>
     /// The model of the player's gun.
     /// </summary>
-    [Header("Shooting Variables")]
     public Transform playerGunModel;
     /// <summary>
     /// The Nozzle the player will shoot bullets from.
     /// </summary>
     public Transform gunNozzle;
+    /// <summary>
+    /// The bullet prefab the player will shoot.
+    /// </summary>
+    public GameObject bulletPrefab;
+    /// <summary>
+    /// The Fire Rate of our shooting (in seconds).
+    /// </summary>
+    public float fireRate;
 
     #region Gun Location Variables
+    [Header("Gun Locations")]
     /// <summary>
     /// The Location where the gun will be Up.
     /// </summary>
@@ -73,33 +59,41 @@ public class PlayerControl : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// The bullet prefab the player will shoot.
+    /// Return true if shooting gun is locked in place, or false if not.
     /// </summary>
-    public GameObject bulletPrefab;
+    public bool gunLocked { get; private set; }
+
+    /// <summary>
+    /// The vector that holds the player's input information.
+    /// </summary>
+    private Vector3 inputVector;
+    /// <summary>
+    /// The time the player has to wait until they can fire a bullet again.
+    /// </summary>
+    private float fireWaitTime;
     #endregion
 
-    private void Start()
+    void Start()
     {
-        controller = GetComponent<CharacterController>();
+
     }
 
     void Update()
     {
-        inputVector = CalculateinputVector();
-        LockingCheck();
+        inputVector = CalculateInputVector();
 
-        PlayerMovement();
+        //Gun Locking Check
+        if (Input.GetKey(KeyCode.M))
+        {
+            gunLocked = true;
+        }
+        else
+        {
+            gunLocked = false;
+        }
 
-        PlayerShooting();
+        ShootingInput();
         PlayerGunControl();
-    }
-
-    //TODO: Fill this out
-    /// <summary>
-    /// The method that's in charge of locking things in place.
-    /// </summary>
-    private void LockingCheck()
-    {
     }
 
     /// <summary>
@@ -108,7 +102,7 @@ public class PlayerControl : MonoBehaviour
     /// <returns>
     /// A new vector with the player's input.
     /// </returns>
-    private Vector3 CalculateinputVector()
+    private Vector3 CalculateInputVector()
     {
         return new Vector3(
             Input.GetAxis("Horizontal"), // X
@@ -117,30 +111,20 @@ public class PlayerControl : MonoBehaviour
     }
 
     /// <summary>
-    /// The method that's in charge of moving.
+    /// The method that's in charge of the shooting input.
     /// </summary>
-    private void PlayerMovement()
+    private void ShootingInput()
     {
-        if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+        if (Input.GetButton("Jump"))
         {
-            playerCharacterModel.localScale = new Vector3(
-                Mathf.Sign(inputVector.x) * Mathf.Abs(playerCharacterModel.localScale.x),
-                playerCharacterModel.localScale.y,
-                playerCharacterModel.localScale.z); 
+            if (fireWaitTime <= 0)
+            {
+                Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
+                fireWaitTime = 1;
+            }
         }
 
-        controller.Move(inputVector * movementSpeed * Time.deltaTime);
-    }
-
-    /// <summary>
-    /// The method that's in charge of shooting.
-    /// </summary>
-    private void PlayerShooting()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
-        }
+        fireWaitTime -= Time.deltaTime * fireRate;
     }
 
     /// <summary>
@@ -148,7 +132,8 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void PlayerGunControl()
     {
-        if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+        //TODO: The rules here are not consistent for some reason.
+        if (!gunLocked)
         {
             // Up
             if (inputVector.x == 0 && inputVector.y > 0)

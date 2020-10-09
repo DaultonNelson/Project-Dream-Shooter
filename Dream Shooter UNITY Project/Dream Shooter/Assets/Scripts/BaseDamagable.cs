@@ -14,7 +14,24 @@ public class BaseDamagable : MonoBehaviour
     /// The tag the colliding object needs to have to damage this Damagable
     /// </summary>
     public string damagingTag;
+    /// <summary>
+    /// Return true if this instance of the script should ignore the shaking code, or false if not.
+    /// </summary>
+    public bool ignoreShake;
+
+    /// <summary>
+    /// The shaking script attached to this GameObject.
+    /// </summary>
+    private ShakeTransformS shake;
     #endregion
+
+    private void Start()
+    {
+        if (!ignoreShake)
+        {
+            shake = GetComponent<ShakeTransformS>(); 
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,6 +41,11 @@ public class BaseDamagable : MonoBehaviour
 
             if (damager != null)
             {
+                if (!ignoreShake)
+                {
+                    shake.Begin(); 
+                }
+
                 currHealthValue -= damager.damageValue;
 
                 damager.OnceDamaged();
@@ -33,6 +55,9 @@ public class BaseDamagable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The method that's in charge of the Damagable's death.
+    /// </summary>
     private void DeathCheck()
     {
         if (currHealthValue <= 0)
