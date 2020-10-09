@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Implement Movement Locking [N]
+//TODO: Implement Gun Control Locking [M]
 public class PlayerControl : MonoBehaviour
 {
     #region Variables
@@ -84,10 +86,20 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         inputVector = CalculateinputVector();
+        LockingCheck();
+
         PlayerMovement();
 
         PlayerShooting();
         PlayerGunControl();
+    }
+
+    //TODO: Fill this out
+    /// <summary>
+    /// The method that's in charge of locking things in place.
+    /// </summary>
+    private void LockingCheck()
+    {
     }
 
     /// <summary>
@@ -136,7 +148,6 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void PlayerGunControl()
     {
-        //TODO: Implement angling the gun
         if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
         {
             // Up
