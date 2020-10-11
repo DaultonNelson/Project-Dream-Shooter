@@ -11,6 +11,10 @@ public class BaseDamagable : MonoBehaviour
     /// </summary>
     public int currHealthValue;
     /// <summary>
+    /// The score value of this Damagable if it's destroyed.
+    /// </summary>
+    public int scoreValue;
+    /// <summary>
     /// The tag the colliding object needs to have to damage this Damagable
     /// </summary>
     public string damagingTag;
@@ -23,10 +27,20 @@ public class BaseDamagable : MonoBehaviour
     /// The shaking script attached to this GameObject.
     /// </summary>
     private ShakeTransformS shake;
+    /// <summary>
+    /// The scoring manager in the scene.
+    /// </summary>
+    private ScoringManager scoreManager;
     #endregion
 
     private void Start()
     {
+        scoreManager = FindObjectOfType<ScoringManager>();
+        if (scoreManager == null)
+        {
+            Debug.LogError("Scoring Manager not found in scene!", gameObject);
+        }
+
         if (!ignoreShake)
         {
             shake = GetComponent<ShakeTransformS>(); 
@@ -62,6 +76,8 @@ public class BaseDamagable : MonoBehaviour
     {
         if (currHealthValue <= 0)
         {
+            scoreManager.CalculateScore(scoreValue);
+
             Destroy(gameObject);
         }
     }
