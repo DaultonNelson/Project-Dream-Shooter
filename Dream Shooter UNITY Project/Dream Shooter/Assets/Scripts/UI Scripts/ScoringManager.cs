@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-//TODO: Implement Scoring System
 public class ScoringManager : MonoBehaviour
 {
     #region Variables
