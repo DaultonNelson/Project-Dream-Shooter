@@ -101,7 +101,7 @@ public class PlayerShooting : MonoBehaviour
     /// <param name="newGun">
     /// The new gun the player will have.
     /// </param>
-    private void ChangeGun(GameObject newGun)
+    public void ChangeGun(GameObject newGun)
     {
         if (newGun == null)
         {
