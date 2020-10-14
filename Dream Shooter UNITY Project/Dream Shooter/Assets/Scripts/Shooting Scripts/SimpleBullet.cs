@@ -16,10 +16,10 @@ public class SimpleBullet : MonoBehaviour, IDamager
     /// <summary>
     /// How long the bullet floats in space in seconds before destroying itself.
     /// </summary>
-    public float bulletLife;
+    public float bulletLife = 1;
     
     /// <summary>
-    /// Implemented from IDamager.
+    /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
     /// </summary>
     public int damageValue { get { return exposedDamageValue; } set { exposedDamageValue = value; } }
     #endregion
@@ -35,6 +35,9 @@ public class SimpleBullet : MonoBehaviour, IDamager
         Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.red);
     }
     
+    /// <summary>
+    /// Implemented from IDamager, the behavior of the Damager once it has damaged a Damagable.
+    /// </summary>
     public void OnceDamaged()
     {
         Destroy(gameObject);

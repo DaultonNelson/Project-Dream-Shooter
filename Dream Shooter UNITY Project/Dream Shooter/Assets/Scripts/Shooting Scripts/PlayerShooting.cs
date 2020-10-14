@@ -6,11 +6,11 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     #region Variables
-    //TODO: Rethink setting this as a prefab, as it could be Destroyed
+    //NOTE: Only set in the editor for now
     /// <summary>
-    /// The gun the player has in their possession.
+    /// The gun the player starts with.
     /// </summary>
-    public GameObject gunObject;
+    public GameObject startingGun;
 
     #region Gun Location Variables
     [Header("Gun Locations")]
@@ -47,6 +47,11 @@ public class PlayerShooting : MonoBehaviour
     /// </summary>
     public Transform gunLocation_BotLeft;
     #endregion
+    
+    /// <summary>
+    /// The gun the player is currently holding in their possession.
+    /// </summary>
+    public GameObject currentlyHeldGun { get; private set; }
     /// <summary>
     /// Return true if shooting gun is locked in place, or false if not.
     /// </summary>
@@ -68,7 +73,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void Start()
     {
-        ChangeGun(gunObject);
+        ChangeGun(startingGun);
     }
 
     void Update()
@@ -100,20 +105,19 @@ public class PlayerShooting : MonoBehaviour
     {
         if (newGun == null)
         {
-            Debug.LogWarning("No Gun Object given");
+            Debug.LogError("No Gun Object given", gameObject);
             return;
         }
-        if (gunObject != null)
+
+        if (currentlyHeldGun != null)
         {
-            Destroy(gunObject);
+            Destroy(currentlyHeldGun);
         }
 
-        gunBehavior = newGun.GetComponent<PlayerGun>();
-        if (gunBehavior != null)
-        {
-            gunObject = Instantiate(newGun, gunLocation_Right.localPosition, Quaternion.identity);
-            gunObject.transform.parent = transform;
-        }
+        currentlyHeldGun = Instantiate(newGun, gunLocation_Right.localPosition, Quaternion.identity);
+        currentlyHeldGun.transform.parent = transform;
+
+        gunBehavior = currentlyHeldGun.GetComponent<PlayerGun>();
     }
 
     /// <summary>
@@ -144,7 +148,7 @@ public class PlayerShooting : MonoBehaviour
             }
         }
 
-        fireWaitTime -= Time.deltaTime * gunBehavior.fireRate;
+        fireWaitTime -= Time.deltaTime * gunBehavior.gunFireRate;
     }
 
     /// <summary>
@@ -157,55 +161,50 @@ public class PlayerShooting : MonoBehaviour
             // Up
             if (inputVector.x == 0 && inputVector.y > 0)
             {
-                gunObject.transform.localPosition = gunLocation_Up.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_Up.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_Up.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_Up.localEulerAngles;
             }
             // Down
             else if (inputVector.x == 0 && inputVector.y < 0)
             {
-                gunObject.transform.localPosition = gunLocation_Down.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_Down.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_Down.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_Down.localEulerAngles;
             }
             // Left
             else if (inputVector.x < 0 && inputVector.y == 0)
             {
-                gunObject.transform.localPosition = gunLocation_Left.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_Left.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_Left.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_Left.localEulerAngles;
             }
             // Right
             else if (inputVector.x > 0 && inputVector.y == 0)
             {
-                gunObject.transform.localPosition = gunLocation_Right.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_Right.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_Right.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_Right.localEulerAngles;
             }
             // Top Right
             else if (inputVector.x > 0 && inputVector.y > 0)
             {
-                gunObject.transform.localPosition = gunLocation_TopRight.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_TopRight.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_TopRight.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_TopRight.localEulerAngles;
             }
             // Bottom Right
             else if (inputVector.x > 0 && inputVector.y < 0)
             {
-                gunObject.transform.localPosition = gunLocation_BotRight.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_BotRight.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_BotRight.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_BotRight.localEulerAngles;
             }
             // Top Left
             else if (inputVector.x < 0 && inputVector.y > 0)
             {
-                gunObject.transform.localPosition = gunLocation_TopLeft.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_TopLeft.localEulerAngles;
+                currentlyHeldGun.transform.localPosition = gunLocation_TopLeft.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_TopLeft.localEulerAngles;
             }
             // Bottom Left
             else if (inputVector.x < 0 && inputVector.y < 0)
             {
-                gunObject.transform.localPosition = gunLocation_BotLeft.localPosition;
-                gunObject.transform.localEulerAngles = gunLocation_BotLeft.localEulerAngles;
-            }
-            // None of the Above
-            else
-            {
-                Debug.LogWarning("None of the above", gameObject);
+                currentlyHeldGun.transform.localPosition = gunLocation_BotLeft.localPosition;
+                currentlyHeldGun.transform.localEulerAngles = gunLocation_BotLeft.localEulerAngles;
             }
         }
     }

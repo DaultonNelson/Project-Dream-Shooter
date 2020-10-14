@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6728122665453154846}
   m_Layer: 0
-  m_Name: Empty_PlayerNozzle
+  m_Name: Empty_SimplePlaceholderNozzle
   m_TagString: Untagged
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
