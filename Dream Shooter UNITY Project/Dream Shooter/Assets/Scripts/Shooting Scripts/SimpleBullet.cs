@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Bullets that fly straight in the direction their given, no other distinct characteristics
+/// </summary>
 public class SimpleBullet : MonoBehaviour, IDamager
 {
     #region Variables
@@ -32,7 +35,6 @@ public class SimpleBullet : MonoBehaviour, IDamager
     private void Update()
     {
         transform.Translate(Time.deltaTime * moveSpeed * transform.right, Space.World);
-        Debug.DrawLine(transform.position, transform.position + transform.right * 10, Color.red);
     }
     
     /// <summary>

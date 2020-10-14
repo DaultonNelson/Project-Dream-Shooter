@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     #region Variables
-    //NOTE: Only set in the editor for now
+    //NOTE: Starting Gun only set in the Unity Editor for now
     /// <summary>
     /// The gun the player starts with.
     /// </summary>

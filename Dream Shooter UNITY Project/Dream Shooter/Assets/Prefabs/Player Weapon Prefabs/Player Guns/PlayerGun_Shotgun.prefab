@@ -315,13 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92e408d91ddf3146983a350ba8ac257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 6886172219894645327, guid: 8210aa6f93ea36e4bb00459a29b14eef,
+  bulletPrefab: {fileID: 8083727041433887990, guid: 5efc25485b5a1224da229ebaf564e757,
     type: 3}
-  gunFireRate: 10
-  overrideBulletSpecs: 1
-  bulletMoveSpeed: 1
-  exposedbulletDamageValue: 1
-  bulletLife: 20
+  gunFireRate: 0.65
 --- !u!1 &9174695153690792922
 GameObject:
   m_ObjectHideFlags: 0
