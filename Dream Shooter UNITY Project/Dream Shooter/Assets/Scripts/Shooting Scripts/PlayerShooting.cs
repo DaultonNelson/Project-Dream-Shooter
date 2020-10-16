@@ -11,6 +11,14 @@ public class PlayerShooting : MonoBehaviour
     /// The gun the player starts with.
     /// </summary>
     public GameObject startingGun;
+    /// <summary>
+    /// The MeshRenderer that's attached to the Player.
+    /// </summary>
+    public MeshRenderer playerRenderer;
+    /// <summary>
+    /// The trail that follows around the player.
+    /// </summary>
+    public TrailRenderer playerTrail;
 
     #region Gun Location Variables
     [Header("Gun Locations")]
@@ -62,6 +70,14 @@ public class PlayerShooting : MonoBehaviour
     /// </summary>
     private PlayerGun gunBehavior;
     /// <summary>
+    /// The Material attached to the player.
+    /// </summary>
+    private Material playerMaterial;
+    /// <summary>
+    /// The Scoring Manager in the scene.
+    /// </summary>
+    private ScoringManager scoreManager;
+    /// <summary>
     /// The vector that holds the player's input information.
     /// </summary>
     private Vector3 inputVector;
@@ -73,6 +89,9 @@ public class PlayerShooting : MonoBehaviour
 
     private void Start()
     {
+        scoreManager = FindObjectOfType<ScoringManager>();
+        playerMaterial = playerRenderer.material;
+
         ChangeGun(startingGun);
     }
 
@@ -93,8 +112,7 @@ public class PlayerShooting : MonoBehaviour
         ShootingInput();
         PlayerGunControl();
     }
-
-    //TODO: Test Weapon Swapping   
+    
     /// <summary>
     /// Changes the Player's gun to the given object.
     /// </summary>
@@ -118,6 +136,10 @@ public class PlayerShooting : MonoBehaviour
         currentlyHeldGun.transform.parent = transform;
 
         gunBehavior = currentlyHeldGun.GetComponent<PlayerGun>();
+
+        playerMaterial.SetColor("_OutlineColor", gunBehavior.gunGradient.colorKeys[0].color);
+        playerTrail.colorGradient = gunBehavior.gunGradient;
+        scoreManager.ChangeTextMeshColor(gunBehavior.gunGradient);
     }
 
     /// <summary>

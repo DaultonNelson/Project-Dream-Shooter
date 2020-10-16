@@ -20,10 +20,16 @@ public class ScoringManager : MonoBehaviour
     /// The maximum score allowed before the counter overflows.
     /// </summary>
     private const int maxScoreAllowed = 99999999;
+
+    /// <summary>
+    /// The TMP that displays the score label.
+    /// </summary>
+    private TMP_Text scoreLabel;
     #endregion
 
     private void Start()
     {
+        scoreLabel = GetComponent<TMP_Text>();
         scoreValue.text = 0.ToString("00 000 000");
     }
 
@@ -42,5 +48,30 @@ public class ScoringManager : MonoBehaviour
         }
 
         scoreValue.text = currScore.ToString("00 000 000");
+    }
+
+    /// <summary>
+    /// Changes the color of the score related Text Meshes.
+    /// </summary>
+    /// <param name="newGradient">
+    /// The gradient the TMPs will change to.
+    /// </param>
+    public void ChangeTextMeshColor(Gradient newGradient)
+    {
+        scoreLabel.colorGradient = new VertexGradient(
+            newGradient.colorKeys[0].color,
+            newGradient.colorKeys[0].color,
+            newGradient.colorKeys[1].color,
+            newGradient.colorKeys[1].color);
+
+        // color0 - Top Left
+        // color1 - Top Right
+        // color2 - Bottom Left
+        // color3 - Bottom Right
+        scoreValue.colorGradient = new VertexGradient(
+            newGradient.colorKeys[0].color,
+            newGradient.colorKeys[0].color,
+            newGradient.colorKeys[1].color,
+            newGradient.colorKeys[1].color);
     }
 }

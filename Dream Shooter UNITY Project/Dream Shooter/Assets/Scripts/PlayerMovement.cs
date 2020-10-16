@@ -25,14 +25,19 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private CharacterController controller;
     /// <summary>
+    /// The shooting script attached to the player.
+    /// </summary>
+    private PlayerShooting shooting;
+    /// <summary>
     /// The vector that holds the player's input information.
     /// </summary>
-    private Vector3 inputVector; 
+    private Vector3 inputVector;
     #endregion
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        shooting = GetComponent<PlayerShooting>();
     }
 
     void Update()
@@ -71,18 +76,17 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void MovementInput()
     {
-        //TODO: Perhaps limit this with one of the locking variables
-        if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+        if (!shooting.gunLocked)
         {
             playerCharacterModel.localScale = new Vector3(
-                Mathf.Sign(inputVector.x) * Mathf.Abs(playerCharacterModel.localScale.x),
-                playerCharacterModel.localScale.y,
-                playerCharacterModel.localScale.z); 
+               Mathf.Sign(inputVector.x) * Mathf.Abs(playerCharacterModel.localScale.x),
+               playerCharacterModel.localScale.y,
+               playerCharacterModel.localScale.z); 
         }
 
         if (!movementLocked)
         {
-            controller.Move(inputVector * movementSpeed * Time.deltaTime); 
+            controller.Move(inputVector * movementSpeed * Time.deltaTime);
         }
     }
 }

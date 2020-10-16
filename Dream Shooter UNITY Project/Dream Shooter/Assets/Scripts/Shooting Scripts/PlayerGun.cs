@@ -10,6 +10,10 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     public GameObject bulletPrefab;
     /// <summary>
+    /// The color Gradient associated with this gun.
+    /// </summary>
+    public Gradient gunGradient;
+    /// <summary>
     /// The Fire Rate of the gun (shots per second).
     /// </summary>
     public float gunFireRate;
@@ -30,7 +34,7 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
-        //TODO: Add optional opposite force to player once they shoot, lick kick-back
+        //TODO: Add optional opposite force to player once they shoot, like kick-back
         Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
     }
 }

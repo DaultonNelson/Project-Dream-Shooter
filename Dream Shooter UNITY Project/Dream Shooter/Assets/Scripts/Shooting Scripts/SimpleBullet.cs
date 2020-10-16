@@ -20,7 +20,12 @@ public class SimpleBullet : MonoBehaviour, IDamager
     /// How long the bullet floats in space in seconds before destroying itself.
     /// </summary>
     public float bulletLife = 1;
-    
+
+    /// <summary>
+    /// The Trail Renderer attached to this Simple Bullet.
+    /// </summary>
+    public TrailRenderer bulletTrail { get; private set; }
+
     /// <summary>
     /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
     /// </summary>
@@ -29,6 +34,10 @@ public class SimpleBullet : MonoBehaviour, IDamager
 
     private void Start()
     {
+        bulletTrail = GetComponent<TrailRenderer>();
+
+        bulletTrail.colorGradient = FindObjectOfType<PlayerGun>().gunGradient;
+
         Destroy(gameObject, bulletLife);
     }
 

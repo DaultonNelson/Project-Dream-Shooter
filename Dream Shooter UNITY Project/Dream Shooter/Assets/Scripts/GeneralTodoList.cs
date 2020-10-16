@@ -11,5 +11,4 @@ public class GeneralTodoList : MonoBehaviour
     //TODO: Make Chili Pepper Enemy
     //TODO: Make Walking Tank Enemy
     //TODO: Implement RPG
-    //TODO: Add a colored trail for the main character depending on the gun they have
 }
