@@ -55,18 +55,29 @@ public class BaseDamagable : MonoBehaviour
 
             if (damager != null)
             {
-                if (!ignoreShake)
-                {
-                    shake.Begin(); 
-                }
-
-                currHealthValue -= damager.damageValue;
-
                 damager.OnceDamaged();
 
-                DeathCheck();
+                DamageObject(damager.damageValue);
             }
         }
+    }
+
+    /// <summary>
+    /// Damages the Damagable.
+    /// </summary>
+    /// <param name="incomingDamage">
+    /// The incoming damage.
+    /// </param>
+    public void DamageObject(int incomingDamage)
+    {
+        if (!ignoreShake)
+        {
+            shake.Begin();
+        }
+
+        currHealthValue -= incomingDamage;
+
+        DeathCheck();
     }
 
     /// <summary>

@@ -52,6 +52,9 @@ public class ShotgunPellet : MonoBehaviour
             SimpleBullet spawnedBehavior = spawnedBullet.GetComponent<SimpleBullet>();
             spawnedBehavior.bulletLife = bulletLifeOverride;
             spawnedBehavior.moveSpeed = bulletMoveSpeedOverride;
+
+            TrailRenderer spawnedTrail = spawnedBullet.GetComponent<TrailRenderer>();
+            spawnedTrail.startWidth /= 2;
         }
         
         //HACK: Breakpoint for testing spawn's random rotation

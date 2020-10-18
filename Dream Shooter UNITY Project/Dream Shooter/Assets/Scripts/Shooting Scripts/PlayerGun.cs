@@ -38,8 +38,10 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
-        //TODO: Add optional opposite force to player once they shoot, like kick-back
         Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
         Instantiate(fireEffect, gunNozzle.position, gunNozzle.rotation);
+
+        //HACK: Breakpoint for testing whenever a gun shoots.
+        //throw new System.NullReferenceException();
     }
 }
