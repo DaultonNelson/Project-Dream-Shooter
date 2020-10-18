@@ -10,6 +10,10 @@ public class PlayerGun : MonoBehaviour
     /// </summary>
     public GameObject bulletPrefab;
     /// <summary>
+    /// The effect that plays once the gun fires.
+    /// </summary>
+    public GameObject fireEffect;
+    /// <summary>
     /// The color Gradient associated with this gun.
     /// </summary>
     public Gradient gunGradient;
@@ -36,5 +40,6 @@ public class PlayerGun : MonoBehaviour
     {
         //TODO: Add optional opposite force to player once they shoot, like kick-back
         Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
+        Instantiate(fireEffect, gunNozzle.position, gunNozzle.rotation);
     }
 }

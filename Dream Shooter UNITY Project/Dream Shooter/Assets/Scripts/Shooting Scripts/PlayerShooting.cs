@@ -16,6 +16,10 @@ public class PlayerShooting : MonoBehaviour
     /// </summary>
     public MeshRenderer playerRenderer;
     /// <summary>
+    /// The Circle behind the character.
+    /// </summary>
+    public SpriteRenderer characterCirc;
+    /// <summary>
     /// The trail that follows around the player.
     /// </summary>
     public TrailRenderer playerTrail;
@@ -138,6 +142,11 @@ public class PlayerShooting : MonoBehaviour
         gunBehavior = currentlyHeldGun.GetComponent<PlayerGun>();
 
         playerMaterial.SetColor("_OutlineColor", gunBehavior.gunGradient.colorKeys[0].color);
+        characterCirc.color = new Color(
+            gunBehavior.gunGradient.colorKeys[0].color.r,
+            gunBehavior.gunGradient.colorKeys[0].color.b,
+            gunBehavior.gunGradient.colorKeys[0].color.g,
+            characterCirc.color.a);
         playerTrail.colorGradient = gunBehavior.gunGradient;
         scoreManager.ChangeTextMeshColor(gunBehavior.gunGradient);
     }

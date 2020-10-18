@@ -317,6 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 8083727041433887990, guid: 5efc25485b5a1224da229ebaf564e757,
     type: 3}
+  fireEffect: {fileID: 834025091992323892, guid: e7b3adb49867b8e42a634ebce6d9a6a3,
+    type: 3}
   gunGradient:
     serializedVersion: 2
     key0: {r: 0.16487186, g: 0.16492324, b: 0.1792453, a: 1}

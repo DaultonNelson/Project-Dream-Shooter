@@ -47,5 +47,5 @@ MonoBehaviour:
     type: 3}
   pelletSpawnSize: 4
   randomAngleLimit: 34
-  bulletMoveSpeedOverride: 3.2
+  bulletMoveSpeedOverride: 6
   bulletLifeOverride: 1.2
