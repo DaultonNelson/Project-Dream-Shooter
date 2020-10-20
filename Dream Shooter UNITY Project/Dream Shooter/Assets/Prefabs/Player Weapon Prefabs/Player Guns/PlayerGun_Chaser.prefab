@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92e408d91ddf3146983a350ba8ac257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 6886172219894645327, guid: 8210aa6f93ea36e4bb00459a29b14eef,
+  bulletPrefab: {fileID: 4351334426904039357, guid: 29d31291c32ba71448fcb1620ec6da1e,
     type: 3}
   fireEffect: {fileID: 0}
   gunGradient:

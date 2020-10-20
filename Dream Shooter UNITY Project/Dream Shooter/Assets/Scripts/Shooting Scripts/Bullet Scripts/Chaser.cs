@@ -22,6 +22,10 @@ public class Chaser : MonoBehaviour, IDamager
     /// </summary>
     public float senseRange;
     /// <summary>
+    /// The lifetime of this Chaser bullet.
+    /// </summary>
+    public float chaserBulletLife;
+    /// <summary>
     /// The damage value of this bullet exposed to the Unity Editor.
     /// </summary>
     public int exposedDamageValue;
@@ -31,6 +35,11 @@ public class Chaser : MonoBehaviour, IDamager
     public Gradient chasingGradient;
 
     /// <summary>
+    /// The object this Chaser bullet will chase.
+    /// </summary>
+    public GameObject objectToChase = null;
+
+    /// <summary>
     /// The TrailRenderer that's attached to this Chaser bullet.
     /// </summary>
     private TrailRenderer chaserTrail;
@@ -38,10 +47,6 @@ public class Chaser : MonoBehaviour, IDamager
     /// The LineRnderer that acts as the Chaser bullet's visual sensor.
     /// </summary>
     private LineRenderer chaserLine;
-    /// <summary>
-    /// The object this Chaser bullet will chase.
-    /// </summary>
-    private GameObject objectToChase = null;
 
     /// <summary>
     /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
@@ -53,14 +58,31 @@ public class Chaser : MonoBehaviour, IDamager
     {
         chaserTrail = GetComponent<TrailRenderer>();
         chaserLine = GetComponent<LineRenderer>();
+
+        Destroy(gameObject, chaserBulletLife);
     }
 
     private void Update()
     {
         if (objectToChase == null)
         {
-            SenseForChase(); 
+            SenseForChase();
         }
+        else
+        {
+            ChaseObject();
+        }
+    }
+
+    /// <summary>
+    /// The method in charge of chasing an object.
+    /// </summary>
+    private void ChaseObject()
+    {
+        chaserLine.SetPosition(0, transform.position);
+        chaserLine.SetPosition(1, objectToChase.transform.position);
+
+        //TODO: Chase Object
     }
 
     /// <summary>
@@ -79,6 +101,11 @@ public class Chaser : MonoBehaviour, IDamager
 
             if (hitInfo.collider.tag == "Enemy")
             {
+                Debug.Log(name + " Sensed an Enemy", gameObject);
+
+                chaserTrail.colorGradient = chasingGradient;
+                chaserLine.colorGradient.SetKeys(chasingGradient.colorKeys, chaserLine.colorGradient.alphaKeys);
+
                 objectToChase = hitInfo.collider.gameObject;
             }
         }

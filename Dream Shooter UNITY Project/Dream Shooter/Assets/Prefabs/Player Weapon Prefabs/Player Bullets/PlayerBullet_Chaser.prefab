@@ -282,7 +282,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}
-      key1: {r: 0.5, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0.5707547, b: 0.5707547, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -328,9 +328,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8357b0a5ffac7448713b5400610666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingSpeed: 1
+  startingSpeed: 2
   chasingSpeed: 10
   senseRange: 2
+  chaserBulletLife: 20
   exposedDamageValue: 1
   chasingGradient:
     serializedVersion: 2
