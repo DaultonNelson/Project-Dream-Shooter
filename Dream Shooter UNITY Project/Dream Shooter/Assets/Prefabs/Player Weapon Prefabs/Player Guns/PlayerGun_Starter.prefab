@@ -157,3 +157,5 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   gunFireRate: 3
+  gunNozzles:
+  - {fileID: 6728122666294325365}

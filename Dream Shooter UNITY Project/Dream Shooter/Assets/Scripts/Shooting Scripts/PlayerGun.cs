@@ -25,21 +25,30 @@ public class PlayerGun : MonoBehaviour
     /// <summary>
     /// The Nozzle the player will shoot bullets from.
     /// </summary>
-    public Transform gunNozzle { get; private set; }
+    public List<Transform> gunNozzles = new List<Transform>();
+    /// <summary>
+    /// The current nozzle this gun is firing from.
+    /// </summary>
+    private int currentNozzle = 0;
     #endregion
-
-    void Start()
-    {
-        gunNozzle = transform.GetChild(0);
-    }
 
     /// <summary>
     /// Shoots the gun.
     /// </summary>
     public void Shoot()
     {
-        Instantiate(bulletPrefab, gunNozzle.position, gunNozzle.rotation);
-        Instantiate(fireEffect, gunNozzle.position, gunNozzle.rotation);
+        Instantiate(bulletPrefab, gunNozzles[currentNozzle].position, gunNozzles[currentNozzle].rotation);
+
+        if (fireEffect != null)
+        {
+            Instantiate(fireEffect, gunNozzles[currentNozzle].position, gunNozzles[currentNozzle].rotation); 
+        }
+
+        currentNozzle++;
+        if (currentNozzle > gunNozzles.Count - 1)
+        {
+            currentNozzle = 0;
+        }
 
         //HACK: Breakpoint for testing whenever a gun shoots.
         //throw new System.NullReferenceException();

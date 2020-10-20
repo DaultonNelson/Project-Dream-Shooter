@@ -349,6 +349,8 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   gunFireRate: 0.65
+  gunNozzles:
+  - {fileID: 2452332905725627418}
 --- !u!1 &9174695153690792922
 GameObject:
   m_ObjectHideFlags: 0

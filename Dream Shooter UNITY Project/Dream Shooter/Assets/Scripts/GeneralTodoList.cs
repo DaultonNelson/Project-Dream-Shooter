@@ -10,5 +10,4 @@ public class GeneralTodoList : MonoBehaviour
     //TODO: Work on particle effects
     //TODO: Make Chili Pepper Enemy
     //TODO: Make Walking Tank Enemy
-    //TODO: Implement RPG
 }
