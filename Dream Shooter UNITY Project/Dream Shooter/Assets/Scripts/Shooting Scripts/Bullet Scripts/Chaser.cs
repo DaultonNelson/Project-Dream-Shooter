@@ -18,6 +18,10 @@ public class Chaser : MonoBehaviour, IDamager
     /// </summary>
     public float chasingSpeed;
     /// <summary>
+    /// The speed of this Chaser's rotation when it's chasing it's target.
+    /// </summary>
+    public float rotateSpeed;
+    /// <summary>
     /// The range at which this Chaser bullet senses things.
     /// </summary>
     public float senseRange;
@@ -33,20 +37,19 @@ public class Chaser : MonoBehaviour, IDamager
     /// The Gradient this Chaser bullet's trail changes to when chasing things.
     /// </summary>
     public Gradient chasingGradient;
-
-    /// <summary>
-    /// The object this Chaser bullet will chase.
-    /// </summary>
-    public GameObject objectToChase = null;
-
+    
     /// <summary>
     /// The TrailRenderer that's attached to this Chaser bullet.
     /// </summary>
     private TrailRenderer chaserTrail;
     /// <summary>
-    /// The LineRnderer that acts as the Chaser bullet's visual sensor.
+    /// The object this Chaser bullet will chase.
     /// </summary>
-    private LineRenderer chaserLine;
+    private GameObject objectToChase = null;
+    /// <summary>
+    /// The Rigidbody attached to this Chaser bullet.
+    /// </summary>
+    private Rigidbody attachedRigidbody;
 
     /// <summary>
     /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
@@ -57,12 +60,13 @@ public class Chaser : MonoBehaviour, IDamager
     private void Start()
     {
         chaserTrail = GetComponent<TrailRenderer>();
-        chaserLine = GetComponent<LineRenderer>();
+
+        attachedRigidbody = GetComponent<Rigidbody>();
 
         Destroy(gameObject, chaserBulletLife);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (objectToChase == null)
         {
@@ -79,10 +83,24 @@ public class Chaser : MonoBehaviour, IDamager
     /// </summary>
     private void ChaseObject()
     {
-        chaserLine.SetPosition(0, transform.position);
-        chaserLine.SetPosition(1, objectToChase.transform.position);
+        //TODO: Check to see if target is destroyed, if so, set back to null.
+        attachedRigidbody.velocity = transform.right * chasingSpeed;
 
-        //TODO: Chase Object
+        //To make our chaser chase it's target, we need to get the cross product of the chaser's direction and the direction of the target to get a orthogonal vector
+        //An orthogonal vector sticks out from the two vectors we give it, and it's length is dependent on how close or far these vector's are
+
+        //Getting the direction from our chaser to it's target
+        Vector2 direction = objectToChase.transform.position - transform.position;
+
+        //Normalizing our direction so it has a length of one, which we'll need for the cross productions
+        direction.Normalize();
+
+        //The direction our Chaser will always be facing: transform.right
+        //Getting cross product, and storing a float so we get length of orthogonal vector and whether or not it's pointing in or out of the screen
+        float rotateAmount = Vector3.Cross(direction, transform.right).z;
+
+        //Edit our Rigidbody's angular velocity so it rotate towards the target
+        attachedRigidbody.angularVelocity = new Vector3(0, 0, -rotateAmount * rotateSpeed);
     }
 
     /// <summary>
@@ -90,35 +108,39 @@ public class Chaser : MonoBehaviour, IDamager
     /// </summary>
     private void SenseForChase()
     {
-        Ray ray = new Ray(transform.position, transform.right);
+        Ray sphereCastRay = new Ray(transform.position, transform.right);
+
         //The info on what we hit
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(ray, out hitInfo, senseRange))
+        if (Physics.SphereCast(sphereCastRay, senseRange, out hitInfo, senseRange))
         {
-            //We're hitting something with our ray
-            Debug.DrawLine(ray.origin, hitInfo.point, Color.green);
 
             if (hitInfo.collider.tag == "Enemy")
             {
-                Debug.Log(name + " Sensed an Enemy", gameObject);
+                //We're hitting an Enemy with our ray
+                Debug.DrawLine(sphereCastRay.origin, hitInfo.point, Color.green);
 
                 chaserTrail.colorGradient = chasingGradient;
-                chaserLine.colorGradient.SetKeys(chasingGradient.colorKeys, chaserLine.colorGradient.alphaKeys);
 
                 objectToChase = hitInfo.collider.gameObject;
             }
         }
+
+        //transform.Translate(Time.deltaTime * startingSpeed * transform.right, Space.World);
+        attachedRigidbody.velocity = transform.right * startingSpeed;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (objectToChase == null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, senseRange);
+        }
         else
         {
-            //We're not hitting anything with our ray
-            Debug.DrawLine(ray.origin, ray.origin + ray.direction * senseRange, Color.red);
-            
-            chaserLine.SetPosition(0, transform.position);
-            chaserLine.SetPosition(1, transform.position + transform.right * senseRange);
-
-            transform.Translate(Time.deltaTime * startingSpeed * transform.right, Space.World);
-
+            Debug.DrawLine(transform.position, objectToChase.transform.position, Color.green);
         }
     }
 
