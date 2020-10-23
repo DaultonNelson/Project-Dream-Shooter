@@ -231,11 +231,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingSpeed: 2
-  chasingSpeed: 10
-  rotateSpeed: 200
-  senseRange: 2
-  chaserBulletLife: 20
+  bulletLife: 10
   exposedDamageValue: 1
+  chasingSpeed: 4
+  rotateSpeed: 100
+  senseRange: 2
   chasingGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.754717, b: 0.008879068, a: 1}

@@ -5,16 +5,13 @@ using UnityEngine;
 /// <summary>
 /// Shells that take a bit to get going, and have a blast radius.
 /// </summary>
-public class RPGShell : MonoBehaviour, IDamager
+public class RPGShell : BaseBullet
 {
     #region MyRegion
     /// <summary>
-    /// The speed the RPG Shell starts moving at.
-    /// </summary>
-    public float startingSpeed;
-    /// <summary>
     /// The maximum speed this RPG Shell can travel.
     /// </summary>
+    [Header("RPG Shell Variables")]
     public float maximumSpeed;
     /// <summary>
     /// The time it takes for this RPG Shell to accelerate.
@@ -29,22 +26,9 @@ public class RPGShell : MonoBehaviour, IDamager
     /// </summary>
     public float blastRadius;
     /// <summary>
-    /// The Lifetime of the bullet.
-    /// </summary>
-    public float bulletLife;
-    /// <summary>
-    /// The damage value of this bullet exposed to the Unity Editor.
-    /// </summary>
-    public int exposedDamageValue;
-    /// <summary>
     /// The effect that plays when this RPG shell blasts.
     /// </summary>
     public GameObject blastEffect;
-
-    /// <summary>
-    /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
-    /// </summary>
-    public int damageValue { get { return exposedDamageValue; } set { exposedDamageValue = value; } }
 
     /// <summary>
     /// The current speed of the RPG Shell.
@@ -55,11 +39,6 @@ public class RPGShell : MonoBehaviour, IDamager
     /// </summary>
     private float timer = 0f;
     #endregion
-
-    void Start()
-    {
-        Destroy(gameObject, bulletLife);
-    }
 
     void Update()
     {
@@ -86,7 +65,7 @@ public class RPGShell : MonoBehaviour, IDamager
     /// <summary>
     /// Implemented from IDamager, the behavior of the Damager once it has damaged a Damagable.
     /// </summary>
-    public void OnceDamaged()
+    public override void OnceDamaged()
     {
         Instantiate(blastEffect, transform.position, transform.rotation);
 
@@ -102,7 +81,7 @@ public class RPGShell : MonoBehaviour, IDamager
                 }
             } 
         }
-        
-        Destroy(gameObject);
+
+        base.OnceDamaged();
     }
 }

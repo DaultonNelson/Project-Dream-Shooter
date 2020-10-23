@@ -49,12 +49,10 @@ public class ShotgunPellet : MonoBehaviour
                          spawnedBullet.transform.localEulerAngles.z + UnityEngine.Random.Range(-randomAngleLimit, randomAngleLimit));
             }
 
-            SimpleBullet spawnedBehavior = spawnedBullet.GetComponent<SimpleBullet>();
+            BaseBullet spawnedBehavior = spawnedBullet.GetComponent<BaseBullet>();
             spawnedBehavior.bulletLife = bulletLifeOverride;
-            spawnedBehavior.moveSpeed = bulletMoveSpeedOverride;
-
-            TrailRenderer spawnedTrail = spawnedBullet.GetComponent<TrailRenderer>();
-            spawnedTrail.startWidth /= 2;
+            spawnedBehavior.startingSpeed = bulletMoveSpeedOverride;
+            spawnedBehavior.bulletTrail.startWidth /= 2;
         }
         
         //HACK: Breakpoint for testing spawn's random rotation
