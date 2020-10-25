@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Bullets that fly straight in the direction their given, no other distinct characteristics
-/// </summary>
-public class SimpleBullet : BaseBullet
+namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
 {
-    private void Start()
+    /// <summary>
+    /// Bullets that fly straight in the direction their given, no other distinct characteristics
+    /// </summary>
+    public class SimpleBullet : BaseBullet
     {
-        bulletTrail.colorGradient = FindObjectOfType<PlayerGun>().gunGradient;
-    }
+        private void Start()
+        {
+            bulletTrail.colorGradient = FindObjectOfType<PlayerGun>().gunGradient;
+        }
 
-    private void Update()
-    {
-        transform.Translate(Time.deltaTime * startingSpeed * transform.right, Space.World);
-    }
+        private void Update()
+        {
+            transform.Translate(Time.deltaTime * startingSpeed * transform.right, Space.World);
+        }
+    } 
 }

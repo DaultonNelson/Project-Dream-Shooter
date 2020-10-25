@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// The cases the player runs into to Swap Weapons
-/// </summary>
-public class GunCase : MonoBehaviour
+namespace Assets.Scripts.Shooting_Scripts
 {
-    #region Variables
     /// <summary>
-    /// The Gun held in this case.
+    /// The cases the player runs into to Swap Weapons
     /// </summary>
-    public GameObject encasedGun;
-    #endregion
-
-    private void OnTriggerEnter(Collider other)
+    public class GunCase : MonoBehaviour
     {
-        if (other.tag == "Player")
+        #region Variables
+        /// <summary>
+        /// The Gun held in this case.
+        /// </summary>
+        public GameObject encasedGun;
+        #endregion
+
+        private void OnTriggerEnter(Collider other)
         {
-            PlayerShooting playShoot = other.GetComponent<PlayerShooting>();
-            playShoot.ChangeGun(encasedGun);
-            Destroy(gameObject);
+            if (other.tag == "Player")
+            {
+                PlayerShooting playShoot = other.GetComponent<PlayerShooting>();
+                playShoot.ChangeGun(encasedGun);
+                Destroy(gameObject);
+            }
         }
-    }
+    } 
 }
