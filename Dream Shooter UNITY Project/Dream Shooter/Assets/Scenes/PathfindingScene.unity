@@ -346,6 +346,7 @@ MonoBehaviour:
     m_Bits: 256
   gridWorldSize: {x: 48, y: 48}
   nodeRadius: 0.5
+  displayOnlyPathGizmos: 0
 --- !u!114 &248608994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1244,17 +1245,17 @@ PrefabInstance:
     - target: {fileID: 8622649852556536230, guid: bab5903b4e6196c49af26a7a7357f0f3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.52
+      value: -14.22
       objectReference: {fileID: 0}
     - target: {fileID: 8622649852556536230, guid: bab5903b4e6196c49af26a7a7357f0f3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.72384e-16
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 8622649852556536230, guid: bab5903b4e6196c49af26a7a7357f0f3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.3
+      value: 15.5
       objectReference: {fileID: 0}
     - target: {fileID: 8622649852556536230, guid: bab5903b4e6196c49af26a7a7357f0f3,
         type: 3}
@@ -1295,6 +1296,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8622649852556536230, guid: bab5903b4e6196c49af26a7a7357f0f3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.6921331
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bab5903b4e6196c49af26a7a7357f0f3, type: 3}

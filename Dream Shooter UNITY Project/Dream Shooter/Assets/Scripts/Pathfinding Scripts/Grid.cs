@@ -22,6 +22,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// Defines how much space each node is going to cover.
         /// </summary>
         public float nodeRadius = 1f;
+        /// <summary>
+        /// Return true to only display the Gizmos that make up the path, or false if not.
+        /// </summary>
+        public bool displayOnlyPathGizmos = false;
 
         /// <summary>
         /// A two dimensional array of nodes that represent our grid.
@@ -35,6 +39,11 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// The size of the Grid in X and Y.
         /// </summary>
         int gridSizeX, gridSizeY;
+
+        /// <summary>
+        /// The maximum size of this grid.
+        /// </summary>
+        public int MaxSize { get { return gridSizeX * gridSizeY; } }
         #endregion
 
         private void Start()
@@ -85,9 +94,9 @@ namespace Assets.Scripts.Pathfinding_Scripts
         {
             List<Node> output = new List<Node>();
 
-            for (int x = -1; x < 1; x++)
+            for (int x = -1; x <= 1; x++)
             {
-                for (int y = -1; y < 1; y++)
+                for (int y = -1; y <= 1; y++)
                 {
                     if (x == 0 && y == 0)
                     {
@@ -137,6 +146,9 @@ namespace Assets.Scripts.Pathfinding_Scripts
             return output;
         }
 
+        /// <summary>
+        /// The path from our seeker to it's target.
+        /// </summary>
         public List<Node> path = new List<Node>();
 
         private void OnDrawGizmos()
@@ -144,23 +156,37 @@ namespace Assets.Scripts.Pathfinding_Scripts
             //TODO: Right now we'll test our pathfinding on the XZ axis, but I want to extend this later on.
             Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-            if (grid != null)
+            if (displayOnlyPathGizmos)
             {
-                foreach (Node n in grid)
+                if (path != null)
                 {
-                    //If the node is walkable it's white, if not it's red
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                    if (path != null)
+                    foreach (Node n in path)
                     {
-                        if (path.Contains(n))
-                        {
-                            Gizmos.color = Color.black;
-                        }
+                        Gizmos.color = Color.black;
+                        Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                     }
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
+            }
+            else
+            {
+                if (grid != null)
+                {
+                    foreach (Node n in grid)
+                    {
+                        //If the node is walkable it's white, if not it's red
+                        Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                        
+                        if (path != null)
+                        {
+                            if (path.Contains(n))
+                            {
+                                Gizmos.color = Color.black;
+                            }
+                        }
+                        Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                    }
                 }
             }
         }
-
     }
 }

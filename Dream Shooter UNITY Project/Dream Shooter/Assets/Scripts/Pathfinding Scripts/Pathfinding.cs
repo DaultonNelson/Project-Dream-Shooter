@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
 
         private void Update()
         {
-            FindPath(seeker.position, target.position);
+            if (Input.GetButtonDown("Jump"))
+            {
+                FindPath(seeker.position, target.position); 
+            }
         }
 
         /// <summary>
@@ -46,10 +50,14 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </param>
         void FindPath(Vector3 startPos, Vector3 targetPos)
         {
+            //Times the execution of our code, good to use to compare performance cost of code.
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             Node startNode = grid.NodeFromWorldPoint(startPos);
             Node targetNode = grid.NodeFromWorldPoint(targetPos);
-
-            List<Node> openSet = new List<Node>();
+            
+            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
             //A HashSet is a collection of data type that prevents duplicate elements and is in no particular order
             HashSet<Node> closedSet = new HashSet<Node>();
 
@@ -57,26 +65,21 @@ namespace Assets.Scripts.Pathfinding_Scripts
 
             while (openSet.Count > 0)
             {
-                Node currentNode = openSet[0];
-                for (int i = 1; i < openSet.Count; i++)
-                {
-                    if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost)
-                    {
-                        currentNode = openSet[i];
-                    }
-                }
-
-                openSet.Remove(currentNode);
+                Node currentNode = openSet.RemoveFirst();
                 closedSet.Add(currentNode);
 
                 if (currentNode == targetNode)
                 {
+                    sw.Stop();
+
+                    UnityEngine.Debug.Log("Path found: " + sw.ElapsedMilliseconds + " ms");
+
                     //We found the target
                     RetracePath(startNode, targetNode);
 
                     return;
                 }
-
+                
                 foreach (Node neighbor in grid.GetNeighbors(currentNode))
                 {
                     if (!neighbor.walkable || closedSet.Contains(neighbor))
@@ -121,7 +124,7 @@ namespace Assets.Scripts.Pathfinding_Scripts
             }
 
             path.Reverse();
-
+            
             grid.path = path;
         }
 

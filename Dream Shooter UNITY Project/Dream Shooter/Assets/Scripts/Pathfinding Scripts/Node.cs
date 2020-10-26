@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Pathfinding_Scripts
 {
-    public class Node
+    public class Node : IHeapItem<Node>
     {
         #region Variables
         /// <summary>
-        /// Returns true if not is walkable, or false if not.
+        /// Returns true if Node is walkable, or false if not.
         /// </summary>
         public bool walkable { get; set; }
         /// <summary>
-        /// The node's position in the game world.
+        /// The Node's position in the game world.
         /// </summary>
         public Vector3 worldPosition { get; set; }
         /// <summary>
@@ -35,13 +35,23 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </summary>
         public int hCost { get; set; }
         /// <summary>
-        /// Returns the F Cost of this node (gCost + hCost).
+        /// Returns the F Cost of this Node (gCost + hCost).
         /// </summary>
         public int fCost { get { return gCost + hCost; } }
         /// <summary>
-        /// The parent of this node.
+        /// The parent of this Node.
         /// </summary>
         public Node parent { get; set; }
+
+        /// <summary>
+        /// The index of this Node within a Heap.
+        /// </summary>
+        int heapIndex;
+
+        /// <summary>
+        /// Implemented from IHeapItem, the index of this Node within a Heap.
+        /// </summary>
+        public int HeapIndex { get { return heapIndex; } set { heapIndex = value; } }
         #endregion
 
         /// <summary>
@@ -65,6 +75,35 @@ namespace Assets.Scripts.Pathfinding_Scripts
             worldPosition = _worldPos;
             gridX = _gridX;
             gridY = _gridY;
+        }
+
+        /// <summary>
+        /// Implemented from IComparable, Compares one object (Node) to another for it's priority.
+        /// </summary>
+        /// <param name="other">
+        /// The other Node this Node is being compared to.
+        /// </param>
+        /// <returns>
+        /// 1 if other Node's priority is higher than this Node's, if same returns 0, if lower returns -1.
+        /// </returns>
+        public int CompareTo(Node other)
+        {
+            int output = 5;
+
+            //Is the other's fCost higher that this Node's fCost
+            int compare = fCost.CompareTo(other.fCost);
+
+            //Both fCosts are the same value
+            if (compare == 0)
+            {
+                //Is the other's hCost higher that this Node's hCost
+                compare = hCost.CompareTo(other.hCost);
+            }
+
+            //If the comparison was higher, that means the other node needs to have a lower priority, so we want the inverse number
+            output = -compare;
+
+            return output;
         }
     }
 }
