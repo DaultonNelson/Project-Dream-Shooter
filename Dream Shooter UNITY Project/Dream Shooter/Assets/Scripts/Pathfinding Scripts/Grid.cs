@@ -67,9 +67,46 @@ namespace Assets.Scripts.Pathfinding_Scripts
                     bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
 
                     //Populate our grid with a node.
-                    grid[x,y] = new Node(walkable, worldPoint);
+                    grid[x,y] = new Node(walkable, worldPoint, x, y);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the neighbors of the given node.
+        /// </summary>
+        /// <param name="node">
+        /// The node whose neighbors we're getting.
+        /// </param>
+        /// <returns>
+        /// The neighbors of the given node.
+        /// </returns>
+        public List<Node> GetNeighbors(Node node)
+        {
+            List<Node> output = new List<Node>();
+
+            for (int x = -1; x < 1; x++)
+            {
+                for (int y = -1; y < 1; y++)
+                {
+                    if (x == 0 && y == 0)
+                    {
+                        //Skip the iteration because we're in the very middle node, when we want the neighbors
+                        continue;
+                    }
+
+                    int checkX = node.gridX + x;
+                    int checkY = node.gridY + y;
+
+                    //If the place we're checking is inside the grid
+                    if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                    {
+                        output.Add(grid[checkX, checkY]);
+                    }
+                }
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -100,6 +137,8 @@ namespace Assets.Scripts.Pathfinding_Scripts
             return output;
         }
 
+        public List<Node> path = new List<Node>();
+
         private void OnDrawGizmos()
         {
             //TODO: Right now we'll test our pathfinding on the XZ axis, but I want to extend this later on.
@@ -111,6 +150,13 @@ namespace Assets.Scripts.Pathfinding_Scripts
                 {
                     //If the node is walkable it's white, if not it's red
                     Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    if (path != null)
+                    {
+                        if (path.Contains(n))
+                        {
+                            Gizmos.color = Color.black;
+                        }
+                    }
                     Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
