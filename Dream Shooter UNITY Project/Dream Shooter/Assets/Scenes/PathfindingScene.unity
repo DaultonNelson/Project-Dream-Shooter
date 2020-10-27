@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 248608992}
   - component: {fileID: 248608993}
   - component: {fileID: 248608994}
+  - component: {fileID: 248608995}
   m_Layer: 0
   m_Name: Empty_AStar
   m_TagString: Untagged
@@ -346,7 +347,7 @@ MonoBehaviour:
     m_Bits: 256
   gridWorldSize: {x: 48, y: 48}
   nodeRadius: 0.5
-  displayOnlyPathGizmos: 0
+  displayGridGizmos: 0
 --- !u!114 &248608994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,8 +360,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caaf275a3b91ee647aa43940a5d5ccd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeker: {fileID: 1075681801}
-  target: {fileID: 1930124465}
+--- !u!114 &248608995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248608991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2dc1fe3ea99af448824c05dfbb9355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &537390613
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1075681801}
+  - component: {fileID: 1075681802}
   m_Layer: 0
   m_Name: Empty_PlayerHolder(Seeker)
   m_TagString: Untagged
@@ -765,6 +777,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1075681802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075681800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63af58204cf036449008a6aa0059d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1930124465}
+  speed: 10
 --- !u!1 &1528116522
 GameObject:
   m_ObjectHideFlags: 0

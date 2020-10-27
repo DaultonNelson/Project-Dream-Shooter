@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections; //Allows me to use IEnumerable in the way I expect
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,35 +13,23 @@ namespace Assets.Scripts.Pathfinding_Scripts
     {
         #region Variables
         /// <summary>
-        /// The Transform following the path to the target.
-        /// </summary>
-        public Transform seeker;
-        /// <summary>
-        /// The Transform that represents our target.
-        /// </summary>
-        public Transform target;
-
-        /// <summary>
         /// The grid this pathfinding will use.
         /// </summary>
         Grid grid;
+        /// <summary>
+        /// The Path Request Manager class reference.
+        /// </summary>
+        PathRequestManager requestManager;
         #endregion
 
         private void Awake()
         {
             grid = GetComponent<Grid>();
-        }
-
-        private void Update()
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                FindPath(seeker.position, target.position); 
-            }
+            requestManager = GetComponent<PathRequestManager>();
         }
 
         /// <summary>
-        /// Finds a path between two given points
+        /// Finds a path between two given points.
         /// </summary>
         /// <param name="startPos">
         /// The starting position of the path.
@@ -48,58 +37,90 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// <param name="targetPos">
         /// The target position of the path.
         /// </param>
-        void FindPath(Vector3 startPos, Vector3 targetPos)
+        IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
         {
             //Times the execution of our code, good to use to compare performance cost of code.
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            //The waypoints of our path.
+            Vector3[] waypoints = new Vector3[0];
+            //Will only be true if we actually find a path.
+            bool pathSuccess = false;
+
             Node startNode = grid.NodeFromWorldPoint(startPos);
             Node targetNode = grid.NodeFromWorldPoint(targetPos);
-            
-            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
-            //A HashSet is a collection of data type that prevents duplicate elements and is in no particular order
-            HashSet<Node> closedSet = new HashSet<Node>();
 
-            openSet.Add(startNode);
-
-            while (openSet.Count > 0)
+            if (startNode.walkable && targetNode.walkable)
             {
-                Node currentNode = openSet.RemoveFirst();
-                closedSet.Add(currentNode);
+                Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+                //A HashSet is a collection of data type that prevents duplicate elements and is in no particular order
+                HashSet<Node> closedSet = new HashSet<Node>();
 
-                if (currentNode == targetNode)
+                openSet.Add(startNode);
+
+                while (openSet.Count > 0)
                 {
-                    sw.Stop();
+                    Node currentNode = openSet.RemoveFirst();
+                    closedSet.Add(currentNode);
 
-                    UnityEngine.Debug.Log("Path found: " + sw.ElapsedMilliseconds + " ms");
-
-                    //We found the target
-                    RetracePath(startNode, targetNode);
-
-                    return;
-                }
-                
-                foreach (Node neighbor in grid.GetNeighbors(currentNode))
-                {
-                    if (!neighbor.walkable || closedSet.Contains(neighbor))
+                    if (currentNode == targetNode)
                     {
-                        continue;
+                        sw.Stop();
+
+                        UnityEngine.Debug.Log("Path found: " + sw.ElapsedMilliseconds + " ms");
+
+                        pathSuccess = true;
+
+                        break;
                     }
 
-                    int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
-                    if (newMovementCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
+                    foreach (Node neighbor in grid.GetNeighbors(currentNode))
                     {
-                        neighbor.gCost = newMovementCostToNeighbor;
-                        neighbor.hCost = GetDistance(neighbor, targetNode);
-                        neighbor.parent = currentNode;
-                        if (!openSet.Contains(neighbor))
+                        if (!neighbor.walkable || closedSet.Contains(neighbor))
                         {
-                            openSet.Add(neighbor);
+                            continue;
+                        }
+
+                        int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
+                        if (newMovementCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
+                        {
+                            neighbor.gCost = newMovementCostToNeighbor;
+                            neighbor.hCost = GetDistance(neighbor, targetNode);
+                            neighbor.parent = currentNode;
+                            if (!openSet.Contains(neighbor))
+                            {
+                                openSet.Add(neighbor);
+                            }
                         }
                     }
                 }
             }
+            yield return null;
+
+            //We found the target
+            RetracePath(startNode, targetNode);
+
+            if (pathSuccess)
+            {
+                //We found the target and are making waypoints to it
+                waypoints = RetracePath(startNode, targetNode);
+            }
+            requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+        }
+
+        /// <summary>
+        /// Starts finding a path.
+        /// </summary>
+        /// <param name="startPos">
+        /// The path's start.
+        /// </param>
+        /// <param name="targetPos">
+        /// The path's end.
+        /// </param>
+        public void StartFindPath(Vector3 startPos, Vector3 targetPos)
+        {
+            StartCoroutine(FindPath(startPos, targetPos));
         }
 
         /// <summary>
@@ -111,8 +132,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// <param name="endNode">
         /// The target Node.
         /// </param>
-        void RetracePath(Node startNode, Node endNode)
+        Vector3[] RetracePath(Node startNode, Node endNode)
         {
+            Vector3[] output = new Vector3[0];
+
             List<Node> path = new List<Node>();
 
             Node currentNode = endNode;
@@ -123,9 +146,47 @@ namespace Assets.Scripts.Pathfinding_Scripts
                 currentNode = currentNode.parent;
             }
 
-            path.Reverse();
-            
-            grid.path = path;
+            output = SimplifyPath(path);
+
+            //output.Reverse(); //Doesn't work, and doesn't return a compile time error
+            Array.Reverse(output);
+
+            return output;
+        }
+
+        /// <summary>
+        /// Simplifies the given path.
+        /// </summary>
+        /// <param name="path">
+        /// The path that needs simplification.
+        /// </param>
+        /// <returns>
+        /// A simplified path.
+        /// </returns>
+        Vector3[] SimplifyPath(List<Node> path)
+        {
+            Vector3[] output = new Vector3[0];
+
+            List<Vector3> waypoints = new List<Vector3>();
+            //The direction of the last two nodes.
+            Vector2 directionOld = Vector2.zero;
+
+            for (int i = 1; i < path.Count; i++)
+            {
+                Vector2 directionNew = new Vector2(path[i - 1].gridX - path[i].gridX, path[i - 1].gridY - path[i].gridY);
+                
+                //If the path has changed direction
+                if (directionNew != directionOld)
+                {
+                    waypoints.Add(path[i].worldPosition);
+                }
+                
+                directionOld = directionNew;
+            }
+
+            output = waypoints.ToArray();
+
+            return output;
         }
 
         /// <summary>

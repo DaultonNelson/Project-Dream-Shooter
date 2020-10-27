@@ -23,9 +23,9 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </summary>
         public float nodeRadius = 1f;
         /// <summary>
-        /// Return true to only display the Gizmos that make up the path, or false if not.
+        /// Return true to display the Grid gizmos, or false if not.
         /// </summary>
-        public bool displayOnlyPathGizmos = false;
+        public bool displayGridGizmos = false;
 
         /// <summary>
         /// A two dimensional array of nodes that represent our grid.
@@ -46,7 +46,7 @@ namespace Assets.Scripts.Pathfinding_Scripts
         public int MaxSize { get { return gridSizeX * gridSizeY; } }
         #endregion
 
-        private void Start()
+        private void Awake()
         {
             nodeDiameter = nodeRadius * 2;
             gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -62,7 +62,7 @@ namespace Assets.Scripts.Pathfinding_Scripts
             grid = new Node[gridSizeX, gridSizeY];
 
             //The bottom left corner of our world.          //Gets left edge of world               //Bottom left corner
-            Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.forward * gridWorldSize.y/2;
+            Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
             for (int x = 0; x < gridSizeX; x++)
             {
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Pathfinding_Scripts
                     bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
 
                     //Populate our grid with a node.
-                    grid[x,y] = new Node(walkable, worldPoint, x, y);
+                    grid[x, y] = new Node(walkable, worldPoint, x, y);
                 }
             }
         }
@@ -141,50 +141,24 @@ namespace Assets.Scripts.Pathfinding_Scripts
             int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
             int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
-            output = grid[x,y];
+            output = grid[x, y];
 
             return output;
         }
-
-        /// <summary>
-        /// The path from our seeker to it's target.
-        /// </summary>
-        public List<Node> path = new List<Node>();
 
         private void OnDrawGizmos()
         {
             //TODO: Right now we'll test our pathfinding on the XZ axis, but I want to extend this later on.
             Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-            if (displayOnlyPathGizmos)
+            if (grid != null && displayGridGizmos)
             {
-                if (path != null)
+                foreach (Node n in grid)
                 {
-                    foreach (Node n in path)
-                    {
-                        Gizmos.color = Color.black;
-                        Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-                    }
-                }
-            }
-            else
-            {
-                if (grid != null)
-                {
-                    foreach (Node n in grid)
-                    {
-                        //If the node is walkable it's white, if not it's red
-                        Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                        
-                        if (path != null)
-                        {
-                            if (path.Contains(n))
-                            {
-                                Gizmos.color = Color.black;
-                            }
-                        }
-                        Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-                    }
+                    //If the node is walkable it's white, if not it's red
+                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
         }
