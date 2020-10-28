@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
 {
     /// <summary>
     /// The base class all bullets inherit from.
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
         /// <summary>
         /// The damage value of this bullet exposed to the Unity Editor.
         /// </summary>
-        public int exposedDamageValue;
+        public float exposedDamageValue;
 
         /// <summary>
         /// The TrailRenderer that's attached to this bullet.
@@ -34,7 +34,7 @@ namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
         /// <summary>
         /// Implemented from IDamager, the damage value of the Damager as seen by other Damagables.
         /// </summary>
-        public int damageValue { get { return exposedDamageValue; } set { exposedDamageValue = value; } }
+        public float DamageValue { get { return exposedDamageValue; } set { exposedDamageValue = value; } }
         #endregion
 
         private void Awake()

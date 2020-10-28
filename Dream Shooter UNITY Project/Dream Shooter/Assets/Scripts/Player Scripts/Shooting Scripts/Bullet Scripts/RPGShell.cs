@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
 {
     /// <summary>
     /// Shells that take a bit to get going, and have a blast radius.
     /// </summary>
     public class RPGShell : BaseBullet
     {
-        #region MyRegion
+        #region Variables
         /// <summary>
         /// The maximum speed this RPG Shell can travel.
         /// </summary>
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
                     BaseDamagable damagable = obj.GetComponent<BaseDamagable>();
                     if (damagable != null)
                     {
-                        damagable.DamageObject(damageValue / 2);
+                        damagable.DamageObject(exposedDamageValue / 2);
                     }
                 }
             }

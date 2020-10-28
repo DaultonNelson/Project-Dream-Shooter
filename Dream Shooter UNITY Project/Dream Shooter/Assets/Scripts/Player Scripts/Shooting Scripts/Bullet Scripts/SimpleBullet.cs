@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
 {
     /// <summary>
     /// Bullets that fly straight in the direction their given, no other distinct characteristics

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts.Bullet_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
 {
     /// <summary>
     /// The pellet the Shotgun shoots out, spawns several smaller simple bullets at random rotations.

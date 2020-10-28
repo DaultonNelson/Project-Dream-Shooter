@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts
 {
     public class PlayerGun : MonoBehaviour
     {

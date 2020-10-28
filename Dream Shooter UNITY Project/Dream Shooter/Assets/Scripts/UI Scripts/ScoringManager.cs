@@ -16,7 +16,7 @@ namespace Assets.Scripts.UI_Scripts
         /// <summary>
         /// The current score the player has.
         /// </summary>
-        public int currScore { get; private set; }
+        public int currentScore { get; private set; }
 
         /// <summary>
         /// The maximum score allowed before the counter overflows.
@@ -43,13 +43,19 @@ namespace Assets.Scripts.UI_Scripts
         /// </param>
         public void CalculateScore(int incomingScore)
         {
-            currScore += incomingScore;
-            if (currScore > maxScoreAllowed)
+            currentScore += incomingScore;
+
+            if (currentScore < 0)
             {
-                currScore = maxScoreAllowed;
+                currentScore = 0;
             }
 
-            scoreValue.text = currScore.ToString("00 000 000");
+            if (currentScore > maxScoreAllowed)
+            {
+                currentScore = maxScoreAllowed;
+            }
+
+            scoreValue.text = currentScore.ToString("00 000 000");
         }
 
         /// <summary>
@@ -60,21 +66,21 @@ namespace Assets.Scripts.UI_Scripts
         /// </param>
         public void ChangeTextMeshColor(Gradient newGradient)
         {
-            scoreLabel.colorGradient = new VertexGradient(
-                newGradient.colorKeys[0].color,
-                newGradient.colorKeys[0].color,
-                newGradient.colorKeys[1].color,
-                newGradient.colorKeys[1].color);
+            ChangeTMPGradient(scoreLabel, newGradient.colorKeys);
+            ChangeTMPGradient(scoreValue, newGradient.colorKeys);
+        }
 
+        private void ChangeTMPGradient(TMP_Text TMP, GradientColorKey[] newColors)
+        {
             // color0 - Top Left
             // color1 - Top Right
             // color2 - Bottom Left
             // color3 - Bottom Right
-            scoreValue.colorGradient = new VertexGradient(
-                newGradient.colorKeys[0].color,
-                newGradient.colorKeys[0].color,
-                newGradient.colorKeys[1].color,
-                newGradient.colorKeys[1].color);
+            TMP.colorGradient = new VertexGradient(
+                newColors[0].color,
+                newColors[0].color,
+                newColors[1].color,
+                newColors[1].color);
         }
     } 
 }

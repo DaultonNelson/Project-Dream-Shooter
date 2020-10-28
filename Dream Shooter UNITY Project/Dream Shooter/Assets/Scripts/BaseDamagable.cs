@@ -10,7 +10,7 @@ public class BaseDamagable : MonoBehaviour
     /// <summary>
     /// The current health value of this Damagable.
     /// </summary>
-    public int currHealthValue;
+    public float currHealthValue;
     /// <summary>
     /// The score value of this Damagable if it's destroyed.
     /// </summary>
@@ -25,13 +25,13 @@ public class BaseDamagable : MonoBehaviour
     public bool ignoreShake;
 
     /// <summary>
+    /// The Scoring Manager located in the scene.
+    /// </summary>
+    private ScoringManager scoreManager;
+    /// <summary>
     /// The shaking script attached to this GameObject.
     /// </summary>
     private ShakeTransformS shake;
-    /// <summary>
-    /// The scoring manager in the scene.
-    /// </summary>
-    private ScoringManager scoreManager;
     #endregion
 
     private void Start()
@@ -39,7 +39,7 @@ public class BaseDamagable : MonoBehaviour
         scoreManager = FindObjectOfType<ScoringManager>();
         if (scoreManager == null)
         {
-            Debug.LogError("Scoring Manager not found in scene!", gameObject);
+            Debug.LogError("Scoring Manager was not found!", gameObject);
         }
 
         if (!ignoreShake)
@@ -50,15 +50,17 @@ public class BaseDamagable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //If something that could damage this has enter this trigger
         if (other.tag == damagingTag)
         {
             IDamager damager = other.GetComponent<IDamager>();
 
             if (damager != null)
             {
+                //Call a function on a Damager that says it has damaged
                 damager.OnceDamaged();
 
-                DamageObject(damager.damageValue);
+                DamageObject(damager.DamageValue);
             }
         }
     }
@@ -69,7 +71,7 @@ public class BaseDamagable : MonoBehaviour
     /// <param name="incomingDamage">
     /// The incoming damage.
     /// </param>
-    public void DamageObject(int incomingDamage)
+    public void DamageObject(float incomingDamage)
     {
         if (!ignoreShake)
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Shooting_Scripts
+namespace Assets.Scripts.Player_Scripts.Shooting_Scripts
 {
     /// <summary>
     /// The cases the player runs into to Swap Weapons

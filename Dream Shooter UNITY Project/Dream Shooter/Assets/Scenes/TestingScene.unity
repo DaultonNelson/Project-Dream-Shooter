@@ -644,6 +644,7 @@ GameObject:
   - component: {fileID: 133543219}
   - component: {fileID: 133543221}
   - component: {fileID: 133543220}
+  - component: {fileID: 133543222}
   m_Layer: 5
   m_Name: Image_GunLock_BG
   m_TagString: Untagged
@@ -710,6 +711,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133543218}
   m_CullTransparentMesh: 0
+--- !u!114 &133543222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133543218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62101111accbd0c4b8834cab56bcef71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundSprite: {fileID: 133543220}
+  lockSprite: {fileID: 705092693}
+  inputKeySprite: {fileID: 580448632}
 --- !u!1 &196063898
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,8 +2032,11 @@ GameObject:
   m_Component:
   - component: {fileID: 835792977}
   - component: {fileID: 835792979}
+  - component: {fileID: 835792983}
   - component: {fileID: 835792978}
   - component: {fileID: 835792980}
+  - component: {fileID: 835792982}
+  - component: {fileID: 835792981}
   m_Layer: 0
   m_Name: Empty_PlayerObject
   m_TagString: Player
@@ -2054,7 +2073,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  playerCharacterModel: {fileID: 1324727825}
 --- !u!143 &835792979
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2087,17 +2105,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingGun: {fileID: 4812221384688510121, guid: bf24ba868275ffb49b3871c281baaf6b,
     type: 3}
+--- !u!114 &835792981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835792976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbac75ad90bac4f4fb365fa306a20318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  up: {fileID: 1616133401}
+  down: {fileID: 1454959339}
+  left: {fileID: 1604422389}
+  right: {fileID: 1964181182}
+  topRight: {fileID: 1959977740}
+  botRight: {fileID: 125973418}
+  topLeft: {fileID: 59178244}
+  botLeft: {fileID: 125973418}
+--- !u!114 &835792982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835792976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fbaad12417fcb140bd2d3be62b373cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCharacterModel: {fileID: 1324727825}
   playerRenderer: {fileID: 1324727828}
   characterCirc: {fileID: 308455408}
   playerTrail: {fileID: 1324727827}
-  gunLocation_Up: {fileID: 1616133401}
-  gunLocation_Down: {fileID: 1454959339}
-  gunLocation_Left: {fileID: 1604422389}
-  gunLocation_Right: {fileID: 1964181182}
-  gunLocation_TopRight: {fileID: 1959977740}
-  gunLocation_BotRight: {fileID: 453094580}
-  gunLocation_TopLeft: {fileID: 59178244}
-  gunLocation_BotLeft: {fileID: 125973418}
+--- !u!114 &835792983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835792976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d4d534a3143d542b6f3c0783302574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &856429322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,6 +2487,7 @@ GameObject:
   - component: {fileID: 1171283599}
   - component: {fileID: 1171283601}
   - component: {fileID: 1171283600}
+  - component: {fileID: 1171283602}
   m_Layer: 5
   m_Name: Image_MoveLock_BG
   m_TagString: Untagged
@@ -2498,6 +2554,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171283598}
   m_CullTransparentMesh: 0
+--- !u!114 &1171283602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171283598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62101111accbd0c4b8834cab56bcef71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundSprite: {fileID: 1171283600}
+  lockSprite: {fileID: 2075212861}
+  inputKeySprite: {fileID: 597993642}
 --- !u!1001 &1324727824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3234,12 +3305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 835792978}
   playerShooting: {fileID: 835792980}
-  moveLock_BG: {fileID: 1171283600}
-  moveLock_Lock: {fileID: 2075212861}
-  moveLock_Key: {fileID: 597993642}
-  gunLock_BG: {fileID: 133543220}
-  gunLock_Lock: {fileID: 705092693}
-  gunLock_Key: {fileID: 580448632}
+  movementIcon: {fileID: 1171283602}
+  shootingIcon: {fileID: 133543222}
   BGLockedColor: {r: 0.9254902, g: 0.5019608, b: 0.12156863, a: 1}
 --- !u!1 &1923253506
 GameObject:

@@ -19,6 +19,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </summary>
         public Vector2 gridWorldSize = Vector2.one;
         /// <summary>
+        /// The Terrain regions units could walk on.
+        /// </summary>
+        public TerrainType[] walkableRegions;
+        /// <summary>
         /// Defines how much space each node is going to cover.
         /// </summary>
         public float nodeRadius = 1f;
@@ -31,6 +35,14 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// A two dimensional array of nodes that represent our grid.
         /// </summary>
         Node[,] grid;
+        /// <summary>
+        /// A Dictionary(type, value) containing our walkable region values.
+        /// </summary>
+        Dictionary<int, int> walkableRegionsDictionary = new Dictionary<int, int>();
+        /// <summary>
+        /// The Layers which are walkable.
+        /// </summary>
+        LayerMask walkableMask;
         /// <summary>
         /// The diameter of the nodes.
         /// </summary>
@@ -51,6 +63,14 @@ namespace Assets.Scripts.Pathfinding_Scripts
             nodeDiameter = nodeRadius * 2;
             gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
             gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+
+            foreach (TerrainType region in walkableRegions)
+            {
+                //Here we're using a bitwise OR operator to add two binary values together so that our walkable mask contains all of our walkable terrain reions
+                walkableMask.value |= region.terrainMask.value;
+                walkableRegionsDictionary.Add(Mathf.RoundToInt(Mathf.Log(region.terrainMask.value, 2)), region.terrainPenelty);
+            }
+
             CreateGrid();
         }
 
@@ -75,8 +95,25 @@ namespace Assets.Scripts.Pathfinding_Scripts
                     //CheckSphere checks for a collision, so if there is a collision with an unwalkable, we want to set walkable to the opposite
                     bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
 
+                    //Calculating Node movement penelty.
+                    int movementPenelty = 0;
+
+                    //Shoot Raycasts for weights
+                    if (walkable)
+                    {
+                        //Shooting from some point above our node.
+                        Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);
+                        RaycastHit hit;
+
+                        //If we hit a walkable mask.
+                        if (Physics.Raycast(ray, out hit, 100, walkableMask))
+                        {
+                            walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenelty);
+                        }
+                    }
+
                     //Populate our grid with a node.
-                    grid[x, y] = new Node(walkable, worldPoint, x, y);
+                    grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenelty);
                 }
             }
         }

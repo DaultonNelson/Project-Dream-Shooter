@@ -82,15 +82,21 @@ namespace Assets.Scripts.Pathfinding_Scripts
                             continue;
                         }
 
-                        int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
+                        int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor) + neighbor.movementPenelty;
                         if (newMovementCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
                         {
                             neighbor.gCost = newMovementCostToNeighbor;
                             neighbor.hCost = GetDistance(neighbor, targetNode);
                             neighbor.parent = currentNode;
+
                             if (!openSet.Contains(neighbor))
                             {
                                 openSet.Add(neighbor);
+                            }
+                            else
+                            {
+                                //The neighbor is already in our openSet, and needs updating.
+                                openSet.UpdateItem(neighbor);
                             }
                         }
                     }

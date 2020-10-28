@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Shooting_Scripts;
+﻿using Assets.Scripts.Player_Scripts;
+using Assets.Scripts.Player_Scripts.Shooting_Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,86 +18,39 @@ namespace Assets.Scripts.UI_Scripts
         /// The shooting Component of the player.
         /// </summary>
         public PlayerShooting playerShooting;
-
         /// <summary>
-        /// The Background for the Move Lock graphic.
+        /// The Locking Icon for movement.
         /// </summary>
-        [Space(10)]
-        public Image moveLock_BG;
+        public UILockingIcon movementIcon;
         /// <summary>
-        /// The Lock icon for the Move Lock graphic.
+        /// The Locking Icon for shooting.
         /// </summary>
-        public Image moveLock_Lock;
-        /// <summary>
-        /// The Key icon for the Move Lock graphic.
-        /// </summary>
-        public Image moveLock_Key;
-
-        /// <summary>
-        /// The Background for the Gun Lock graphic.
-        /// </summary>
-        [Space(10)]
-        public Image gunLock_BG;
-        /// <summary>
-        /// The Lock icon for the Gun Lock graphic.
-        /// </summary>
-        public Image gunLock_Lock;
-        /// <summary>
-        /// The Key icon for the Gun Lock graphic.
-        /// </summary>
-        public Image gunLock_Key;
+        public UILockingIcon shootingIcon;
         /// <summary>
         /// The color the BG should be when the graphic is locked.
         /// </summary>
         public Color BGLockedColor = Color.white;
-
-        /// <summary>
-        /// The initial color of the BG graphic.
-        /// </summary>
-        private Color initBGColor;
-        /// <summary>
-        /// The initial color of the lock.
-        /// </summary>
-        private Color initLockColor;
-        /// <summary>
-        /// The initial color of the key.
-        /// </summary>
-        private Color initKeyColor;
         #endregion
-
-        private void Start()
-        {
-            initBGColor = moveLock_BG.color;
-            initLockColor = moveLock_Lock.color;
-            initKeyColor = moveLock_Key.color;
-        }
 
         void Update()
         {
-            if (playerMovement.movementLocked)
-            {
-                moveLock_BG.color = BGLockedColor;
-                moveLock_Lock.color = Color.white;
-                moveLock_Key.color = Color.white;
-            }
-            else
-            {
-                moveLock_BG.color = initBGColor;
-                moveLock_Lock.color = initLockColor;
-                moveLock_Key.color = initKeyColor;
-            }
+            CheckForLocking(movementIcon, playerMovement.movementLocked);
+            CheckForLocking(shootingIcon, playerShooting.gunLocked);
+        }
 
-            if (playerShooting.gunLocked)
+        private void CheckForLocking(UILockingIcon icon, bool locked)
+        {
+            if (locked)
             {
-                gunLock_BG.color = BGLockedColor;
-                gunLock_Lock.color = Color.white;
-                gunLock_Key.color = Color.white;
+                icon.backgroundSprite.color = BGLockedColor;
+                icon.lockSprite.color = Color.white;
+                icon.inputKeySprite.color = Color.white;
             }
             else
             {
-                gunLock_BG.color = initBGColor;
-                gunLock_Lock.color = initLockColor;
-                gunLock_Key.color = initKeyColor;
+                icon.backgroundSprite.color = icon.initBGColor;
+                icon.lockSprite.color = icon.initLockColor;
+                icon.inputKeySprite.color = icon.initKeyColor;
             }
         }
     } 

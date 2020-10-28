@@ -27,6 +27,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </summary>
         public int gridY { get; set; }
         /// <summary>
+        /// The penelty of movement for this Node.
+        /// </summary>
+        public int movementPenelty { get; set; }
+        /// <summary>
         /// The distance from the starting Node.
         /// </summary>
         public int gCost { get; set; }
@@ -55,26 +59,30 @@ namespace Assets.Scripts.Pathfinding_Scripts
         #endregion
 
         /// <summary>
-        /// Creates a new node.
+        /// Creates a new Node.
         /// </summary>
         /// <param name="_walkable">
-        /// Determines whether the node is walkable or not.
+        /// Determines whether the Node is walkable or not.
         /// </param>
         /// <param name="_worldPos">
-        /// The node's world position.
+        /// The Node's world position.
         /// </param>
         /// <param name="_gridX">
-        /// The node's X position in it's grid.
+        /// The Node's X position in it's grid.
         /// </param>
         /// <param name="_gridY">
-        /// The node's Y position in it's grid.
+        /// The Node's Y position in it's grid.
         /// </param>
-        public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
+        /// <param name="_penelty">
+        /// The movement penelty of this Node.
+        /// </param>
+        public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY, int _penelty)
         {
             walkable = _walkable;
             worldPosition = _worldPos;
             gridX = _gridX;
             gridY = _gridY;
+            movementPenelty = _penelty;
         }
 
         /// <summary>
