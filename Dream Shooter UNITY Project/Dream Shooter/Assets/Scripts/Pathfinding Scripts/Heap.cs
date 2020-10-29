@@ -193,11 +193,3 @@ namespace Assets.Scripts.Pathfinding_Scripts
         }
     }
 }
-
-public interface IHeapItem<T> : IComparable<T>
-{
-    /// <summary>
-    /// The index of this Heap item.
-    /// </summary>
-    int HeapIndex { get; set; }
-}

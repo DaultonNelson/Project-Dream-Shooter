@@ -23,6 +23,10 @@ namespace Assets.Scripts.Pathfinding_Scripts
         /// </summary>
         public TerrainType[] walkableRegions;
         /// <summary>
+        /// The penelty for being within a proximity of an obstacle.
+        /// </summary>
+        public int obstacleProximityPenelty = 10;
+        /// <summary>
         /// Defines how much space each node is going to cover.
         /// </summary>
         public float nodeRadius = 1f;
@@ -99,8 +103,8 @@ namespace Assets.Scripts.Pathfinding_Scripts
                     int movementPenelty = 0;
 
                     //Shoot Raycasts for weights
-                    if (walkable)
-                    {
+                    //if (walkable)
+                    //{
                         //Shooting from some point above our node.
                         Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);
                         RaycastHit hit;
@@ -110,12 +114,18 @@ namespace Assets.Scripts.Pathfinding_Scripts
                         {
                             walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenelty);
                         }
+                    //}
+                    if (!walkable)
+                    {
+                        movementPenelty += obstacleProximityPenelty;
                     }
 
                     //Populate our grid with a node.
                     grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenelty);
                 }
             }
+
+            grid = grid.NodeGridBoxBlur(3, gridSizeX, gridSizeY);
         }
 
         /// <summary>
@@ -154,7 +164,7 @@ namespace Assets.Scripts.Pathfinding_Scripts
 
             return output;
         }
-
+        
         /// <summary>
         /// Returns a Node from a given world point.
         /// </summary>
@@ -192,10 +202,12 @@ namespace Assets.Scripts.Pathfinding_Scripts
             {
                 foreach (Node n in grid)
                 {
+                    Gizmos.color = Color.Lerp(Color.white, Color.black, Mathf.InverseLerp(BlurProcessing.peneltyMin, BlurProcessing.peneltyMax, n.movementPenelty));
+
                     //If the node is walkable it's white, if not it's red
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    Gizmos.color = (n.walkable) ? Gizmos.color : Color.red;
                     
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter));
                 }
             }
         }
