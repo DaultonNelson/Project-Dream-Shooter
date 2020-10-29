@@ -15,6 +15,10 @@ namespace Assets.Scripts.Player_Scripts
     {
         #region Variables
         /// <summary>
+        /// The player's movement script.
+        /// </summary>
+        public PlayerMovement movement { get; private set; }
+        /// <summary>
         /// The player's shooting script.
         /// </summary>
         public PlayerShooting shooting { get; private set; }

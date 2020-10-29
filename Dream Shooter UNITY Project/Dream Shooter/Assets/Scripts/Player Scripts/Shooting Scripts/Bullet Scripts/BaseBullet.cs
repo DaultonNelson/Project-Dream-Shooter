@@ -51,5 +51,20 @@ namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
         {
             Destroy(gameObject);
         }
+
+        /// <summary>
+        /// Overrides the Properties of the Base Bullet.
+        /// </summary>
+        /// <param name="_speed">
+        /// The bullet's new speed.
+        /// </param>
+        /// <param name="_life">
+        /// The bullet's new lifetime.
+        /// </param>
+        public void OverrideProperties(float _speed, float _life)
+        {
+            startingSpeed = _speed;
+            bulletLife = _life;
+        }
     } 
 }

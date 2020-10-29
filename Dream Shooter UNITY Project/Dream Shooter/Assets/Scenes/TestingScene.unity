@@ -3303,8 +3303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5111cb015364a47a385d26fb74636f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 835792978}
-  playerShooting: {fileID: 835792980}
+  playerOverhead: {fileID: 835792983}
   movementIcon: {fileID: 1171283602}
   shootingIcon: {fileID: 133543222}
   BGLockedColor: {r: 0.9254902, g: 0.5019608, b: 0.12156863, a: 1}

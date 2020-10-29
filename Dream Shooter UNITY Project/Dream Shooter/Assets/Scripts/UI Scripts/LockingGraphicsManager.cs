@@ -11,13 +11,9 @@ namespace Assets.Scripts.UI_Scripts
     {
         #region Variables
         /// <summary>
-        /// The movement Component of the player.
+        /// The Player Overhead Component container.
         /// </summary>
-        public PlayerMovement playerMovement;
-        /// <summary>
-        /// The shooting Component of the player.
-        /// </summary>
-        public PlayerShooting playerShooting;
+        public PlayerOverhead playerOverhead;
         /// <summary>
         /// The Locking Icon for movement.
         /// </summary>
@@ -34,8 +30,8 @@ namespace Assets.Scripts.UI_Scripts
 
         void Update()
         {
-            CheckForLocking(movementIcon, playerMovement.movementLocked);
-            CheckForLocking(shootingIcon, playerShooting.gunLocked);
+            CheckForLocking(movementIcon, playerOverhead.movement.movementLocked);
+            CheckForLocking(shootingIcon, playerOverhead.shooting.gunLocked);
         }
 
         private void CheckForLocking(UILockingIcon icon, bool locked)

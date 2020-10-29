@@ -52,8 +52,7 @@ namespace Assets.Scripts.Player_Scripts.Shooting_Scripts.Bullet_Scripts
                 }
 
                 BaseBullet spawnedBehavior = spawnedBullet.GetComponent<BaseBullet>();
-                spawnedBehavior.bulletLife = bulletLifeOverride;
-                spawnedBehavior.startingSpeed = bulletMoveSpeedOverride;
+                spawnedBehavior.OverrideProperties(bulletMoveSpeedOverride, bulletLifeOverride);
                 spawnedBehavior.bulletTrail.startWidth /= 2;
             }
 

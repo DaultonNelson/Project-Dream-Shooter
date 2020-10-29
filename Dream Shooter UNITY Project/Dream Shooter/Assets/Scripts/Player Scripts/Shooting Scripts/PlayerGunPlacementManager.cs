@@ -64,54 +64,54 @@ namespace Assets.Scripts.Player_Scripts.Shooting_Scripts
         /// </summary>
         private void PlayerGunControl()
         {
-            //TODO: Probably a better way to do this.
+            Vector2 inputVector = InputVectorProcessor.Generate();
 
             if (!playerOverhead.shooting.gunLocked)
             {
                 // Up
-                if (InputVectorProcessor.Generate().x == 0 && InputVectorProcessor.Generate().y > 0)
+                if (inputVector.x == 0 && inputVector.y > 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = up.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = up.localEulerAngles;
                 }
                 // Down
-                else if (InputVectorProcessor.Generate().x == 0 && InputVectorProcessor.Generate().y < 0)
+                else if (inputVector.x == 0 && inputVector.y < 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = down.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = down.localEulerAngles;
                 }
                 // Left
-                else if (InputVectorProcessor.Generate().x < 0 && InputVectorProcessor.Generate().y == 0)
+                else if (inputVector.x < 0 && inputVector.y == 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = left.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = left.localEulerAngles;
                 }
                 // Right
-                else if (InputVectorProcessor.Generate().x > 0 && InputVectorProcessor.Generate().y == 0)
+                else if (inputVector.x > 0 && inputVector.y == 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = right.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = right.localEulerAngles;
                 }
                 // Top Right
-                else if (InputVectorProcessor.Generate().x > 0 && InputVectorProcessor.Generate().y > 0)
+                else if (inputVector.x > 0 && inputVector.y > 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = topRight.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = topRight.localEulerAngles;
                 }
                 // Bottom Right
-                else if (InputVectorProcessor.Generate().x > 0 && InputVectorProcessor.Generate().y < 0)
+                else if (inputVector.x > 0 && inputVector.y < 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = botRight.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = botRight.localEulerAngles;
                 }
                 // Top Left
-                else if (InputVectorProcessor.Generate().x < 0 && InputVectorProcessor.Generate().y > 0)
+                else if (inputVector.x < 0 && inputVector.y > 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = topLeft.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = topLeft.localEulerAngles;
                 }
                 // Bottom Left
-                else if (InputVectorProcessor.Generate().x < 0 && InputVectorProcessor.Generate().y < 0)
+                else if (inputVector.x < 0 && inputVector.y < 0)
                 {
                     playerOverhead.shooting.currentlyHeldGun.transform.localPosition = botLeft.localPosition;
                     playerOverhead.shooting.currentlyHeldGun.transform.localEulerAngles = botLeft.localEulerAngles;
