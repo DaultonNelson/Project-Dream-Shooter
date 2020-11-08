@@ -354,7 +354,7 @@ MonoBehaviour:
   - terrainMask:
       serializedVersion: 2
       m_Bits: 1024
-    terrainPenelty: 10
+    terrainPenelty: 50
   obstacleProximityPenelty: 10
   nodeRadius: 0.5
   displayGridGizmos: 1
